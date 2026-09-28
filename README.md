@@ -5,9 +5,13 @@
 ## 실행
 
 ```bash
-pip install pykrx pandas numpy
+pip install -U pykrx pandas numpy
+export KRX_ID=내_KRX_아이디      # data.krx.co.kr 회원 계정
+export KRX_PW=내_KRX_비밀번호
 python institutional_backtest.py
 ```
+
+최신 pykrx는 KRX 정보데이터시스템에 로그인해야 데이터를 받을 수 있어서 `KRX_ID`, `KRX_PW` 환경 변수가 필요합니다. 계정은 [data.krx.co.kr](https://data.krx.co.kr)에서 무료로 만들 수 있습니다.
 
 첫 실행 때 거래일별 전 종목 시세와 기관 순매수를 KRX에서 받아 `cache/`에 저장합니다. 약 750거래일 × 4번 요청이라 시간이 좀 걸리고, 두 번째 실행부터는 캐시를 씁니다.
 

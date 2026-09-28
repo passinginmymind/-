@@ -19,7 +19,8 @@
   KRX 등락률은 권리락 등이 반영된 기준가 대비 수치입니다.
 
 사용 예
-  pip install pykrx pandas numpy
+  pip install -U pykrx pandas numpy
+  export KRX_ID=... KRX_PW=...     # 최신 pykrx 는 KRX 로그인 필요
   python institutional_backtest.py
   python institutional_backtest.py --years 3 --streak 3 --hold 5 --min-value 1e9
 """
@@ -274,6 +275,10 @@ def main() -> None:
     p.add_argument("--sleep", type=float, default=0.3, help="KRX 요청 간 대기(초)")
     p.add_argument("--out", default="trades.csv", help="거래 내역 CSV 경로")
     a = p.parse_args()
+
+    if not (os.environ.get("KRX_ID") and os.environ.get("KRX_PW")):
+        print("경고: KRX_ID / KRX_PW 환경 변수가 없습니다. 최신 pykrx 는 KRX 로그인이 필요해 "
+              "캐시가 없으면 데이터 수집이 실패할 수 있습니다.", file=sys.stderr)
 
     end_dt = datetime.strptime(a.end, "%Y%m%d") if a.end else datetime.today() - timedelta(days=1)
     start_dt = end_dt - timedelta(days=int(365 * a.years))
